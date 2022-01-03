@@ -30,15 +30,19 @@ void loop() {
   
   while(true){
     for(int i = 0 ; i <= 9 ; i++){ //loop over all digits
-      for(int seg = 0; seg < 7 ; seg++){ //decode current digit, set LED states accordingly
-        if(decoder[i][seg]){
-          digitalWrite(getPinForSegment(seg), HIGH);
-        }else{
-          digitalWrite(getPinForSegment(seg), LOW);
-        }
-      }
+      displayDigit(i);
       delay(1000);
     }
+  }
+}
+
+//decode current digit, set LED states accordingly
+bool displayDigit(int num){
+  for(int seg = 0; seg < 7 ; seg++){
+    if(decoder[num][seg])
+      digitalWrite(getPinForSegment(seg), HIGH);
+    else
+      digitalWrite(getPinForSegment(seg), LOW);
   }
 }
 
