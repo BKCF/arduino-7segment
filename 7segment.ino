@@ -37,13 +37,16 @@ void loop() {
 }
 
 //decode current digit, set LED states accordingly
-bool displayDigit(int num){
+int displayDigit(int num){
+  if(num < 0 || num >= 10)
+    return -1;
   for(int seg = 0; seg < 7 ; seg++){
     if(decoder[num][seg])
       digitalWrite(getPinForSegment(seg), HIGH);
     else
       digitalWrite(getPinForSegment(seg), LOW);
   }
+  return 0;
 }
 
 int getPinForSegment(int segment){
