@@ -1,4 +1,7 @@
+//Decodes decimal -> 7 segment
+//true flag corresponds to LED HIGH
 const bool decoder[10][7] = {
+// A B C D E F G
   {1,1,1,1,1,1,0}, //0
   {0,1,1,0,0,0,0}, //1
   {1,1,0,1,1,0,1}, //2
@@ -8,51 +11,26 @@ const bool decoder[10][7] = {
   {1,0,1,1,1,1,1}, //6
   {1,1,1,0,0,0,0}, //7
   {1,1,1,1,1,1,1}, //8
-  {1,1,1,1,0,1,1} //9
+  {1,1,1,1,0,1,1}  //9
 };
+
+//connect LED segments A-G in sequence to arduino pins,
+//starting with pin STARTPIN
+#define STARTPIN 7
 
 void setup() {
   Serial.begin(9600);
-  for(int i = 6 ; i <= 13 ; i++)
+  
+  //initialize LED pins
+  for(int i = STARTPIN ; i <= STARTPIN+7 ; i++)
     pinMode(i, OUTPUT);
-  pinMode(3, INPUT);
 }
 
 void loop() {
-//  for(int i = 6 ; i <= 13 ; i++)
-//    digitalWrite(i, HIGH);
-//  delay(1000);
-//  for(int i = 6 ; i <= 13 ; i++)
-//    digitalWrite(i, LOW);
-//  delay(1000);
-/*
-  int i = 8;
-  for(int seg = 0; seg < 8 ; seg++){
-      if(decoder[i][seg]){
-        digitalWrite(getPinForSegment(seg), HIGH);
-      }else{
-        digitalWrite(getPinForSegment(seg), LOW);
-      }
-    }
-    delay(1000);*/
-  int i = 0;
-  bool pressed = false;
   
   while(true){
-    /*
-    if(digitalRead(3) == HIGH && !pressed){
-      i++;
-      i %= 10;
-      pressed = true;
-      Serial.println("PRESSED");
-    }
-    else if(digitalRead(3) == LOW){
-      pressed = false;
-      Serial.println("UNPRESSED");
-    }*/
-    
-    for(int i = 0 ; i <= 9 ; i++){
-      for(int seg = 0; seg < 7 ; seg++){
+    for(int i = 0 ; i <= 9 ; i++){ //loop over all digits
+      for(int seg = 0; seg < 7 ; seg++){ //decode current digit, set LED states accordingly
         if(decoder[i][seg]){
           digitalWrite(getPinForSegment(seg), HIGH);
         }else{
@@ -61,13 +39,9 @@ void loop() {
       }
       delay(1000);
     }
-    
   }
-    
-  
-
 }
 
 int getPinForSegment(int segment){
-  return 7+segment;
+  return STARTPIN+segment;
 }
